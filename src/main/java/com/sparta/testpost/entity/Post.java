@@ -34,6 +34,7 @@ public class Post extends Timestamped{
         this.contents = requestDto.getContents();
     }
 
+
     public void update(PostRequestDto requestDto) { // 업데이트 시 받아와야할 것
         //제목, 작성자명, 작성 내용을 수정
         this.password = requestDto.getPassword();

@@ -35,8 +35,12 @@ public class PostService {
     }
 
     // 선택한 게시글 조회 로직
-    public Optional<Post> getPost(Long id) {
-        return postRepository.findById(id);
+//    public Optional<Post> getPost(Long id) {
+//        return postRepository.findById(id);
+//    }
+
+    public List<PostResponseDtowhole> getPost(Long id) {
+        return postRepository.findById(id).stream().map(PostResponseDtowhole::new).toList();
     }
 
 

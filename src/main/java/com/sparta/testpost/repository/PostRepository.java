@@ -8,8 +8,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
-//    Optional <Post> findByPassoword(String password);
 //    List<Post> findAllByOrderByModifiedAtDesc();
     List<Post> findAllByOrderByCreatedAtDesc();
-    Optional<Post> findById(Long id); // 선택한 게시글(하나) 읽어오는 방법
+//    Optional<Post> findById(Long id); // 선택한 게시글(하나) 읽어오는 방법
 }
