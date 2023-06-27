@@ -20,7 +20,7 @@ public class Post extends Timestamped{
     private Long id;
     @Column(name = "password", nullable = false, unique = true)
     private String password;
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false)
     private String username;
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
@@ -35,9 +35,8 @@ public class Post extends Timestamped{
     }
 
 
-    public void update(PostRequestDto requestDto) { // 업데이트 시 받아와야할 것
+    public void update(PostRequestDto requestDto) { // 수정할 내용들
         //제목, 작성자명, 작성 내용을 수정
-        this.password = requestDto.getPassword();
         this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();

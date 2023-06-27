@@ -6,22 +6,19 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class PostResponseDto {
+public class PostResponseDto { // 받아 올 수 있는 모든 내용
     private Long id;
-    private String password;
     private String username;
     private String title;
     private String contents;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.username = post.getUsername();
         this.contents = post.getContents();
-        this.password = post.getPassword();
         this.title = post.getTitle();
         this.createdAt = post.getCreatedAt();
-        this.modifiedAt = post.getModifiedAt();
+
     }
 }

@@ -22,7 +22,7 @@ public class PostController {
 
     // 게시글 전체 조회
     @GetMapping("/posts")
-    public List<PostResponseDtowhole> getPosts() {
+    public List<PostResponseDto> getPosts() {
         return postService.getPosts();
     }
     // 게시글 등록
@@ -38,19 +38,20 @@ public class PostController {
 
     // 선택한 게시글 조회
     @GetMapping("/posts/{id}")
-    public List<PostResponseDtowhole> getPost(@PathVariable Long id) {
+    public PostResponseDto getPost(@PathVariable Long id) {
         return postService.getPost(id);
     }
 
     // 선택한 게시글 수정
-    @PutMapping("/post/{id}/{password}")
-    public Long updatePost(@PathVariable  Long id, @PathVariable PostRequestDto password) {
-        return postService.updatePost(id, password);
+    @PutMapping("/posts/{id}")
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
+        return postService.updatePost(id, requestDto);
     }
 
     // 선택한 게시글 삭제
-    @DeleteMapping("/post/{id}/{password}")
-    public Long deletePost(@PathVariable Long id, @PathVariable PostRequestDto password) {
-        return postService.deletePost(id ,password);
+    @DeleteMapping("/posts/{id}")
+    public Map<String, String> deletePost(@PathVariable Long id, @RequestBody Map<String,String> password) {
+        // password = {"password":"77878"}
+        return postService.deletePost(id ,password.get("password"));
     }
 }

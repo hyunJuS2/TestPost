@@ -2,14 +2,14 @@ package com.sparta.testpost.service;
 
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
-import com.sparta.testpost.dto.PostResponseDtowhole;
 import com.sparta.testpost.entity.Post;
 import com.sparta.testpost.repository.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 public class PostService {
@@ -30,8 +30,8 @@ public class PostService {
 
     }
     //게시글 전체 조회 로직
-    public List<PostResponseDtowhole> getPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDtowhole::new).toList();
+    public List<PostResponseDto> getPosts() {
+        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new).toList();
     }
 
     // 선택한 게시글 조회 로직
@@ -39,30 +39,33 @@ public class PostService {
 //        return postRepository.findById(id);
 //    }
 
-    public List<PostResponseDtowhole> getPost(Long id) {
-        return postRepository.findById(id).stream().map(PostResponseDtowhole::new).toList();
+    public PostResponseDto getPost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow();
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return postResponseDto;
     }
 
 
     // 게시글 수정 로직
     @Transactional
-    public Long updatePost(Long id,PostRequestDto requestDto)  {
+    public PostResponseDto updatePost(Long id,PostRequestDto requestDto)  {
         //해당 게시글이 DB에 존재하는지 확인
         Post post = findPost(id, requestDto.getPassword());
         // 게시글 수정
         post.update(requestDto);
-        return id;
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return postResponseDto;
     }
 
     //게시글 삭제 로직
     @Transactional
-    public Long deletePost(Long id , PostRequestDto requestDto) {
+    public Map<String,String> deletePost(Long id , String password) {
         //해당 게시글이 DB에 존재하는지 확인
-        Post post;
-        post = findPost(id,requestDto.getPassword());
+        Post post = findPost(id,password);
         // 게시글 삭제
         postRepository.delete(post);
-        return id;
+
+        return Collections.singletonMap("message","삭제 성공");
     }
     //게시글의 존재여부 확인
     private Post findPost(Long id,String password){
@@ -74,6 +77,22 @@ public class PostService {
         }
         return post;
     }
+
+    public Map<String,String> deletePosts(Long postId, String password) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post Not Found"));
+
+        if (!post.getPassword().equals(password)) {
+            throw new IllegalArgumentException("The entered password does not matched");
+        }
+        postRepository.delete(post);
+        return Collections.singletonMap("success","true");
+    }
+//    private Post findPost(Long id, String password) {
+//        return postRepository.findById(id)
+//                .filter(post -> post.getPassword().equals(password))
+//                .orElseThrow(() -> new IllegalArgumentException("선택하신 게시글은 존재하지 않거나 비밀번호가 일치하지 않습니다."));
+//    }
 
 
 //    private Post findPost(Long id, String password){
