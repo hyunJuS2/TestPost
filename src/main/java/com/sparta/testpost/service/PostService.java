@@ -78,29 +78,24 @@ public class PostService {
         return post;
     }
 
-    public Map<String,String> deletePosts(Long postId, String password) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post Not Found"));
 
-        if (!post.getPassword().equals(password)) {
-            throw new IllegalArgumentException("The entered password does not matched");
-        }
-        postRepository.delete(post);
-        return Collections.singletonMap("success","true");
-    }
+// 윤상님🌟
+//    public Map<String,String> deletePosts(Long postId, String password) {
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new IllegalArgumentException("Post Not Found"));
+//
+//        if (!post.getPassword().equals(password)) {
+//            throw new IllegalArgumentException("The entered password does not matched");
+//        }
+//        postRepository.delete(post);
+//        return Collections.singletonMap("success","true");
+//    }
+
+
 //    private Post findPost(Long id, String password) {
 //        return postRepository.findById(id)
 //                .filter(post -> post.getPassword().equals(password))
 //                .orElseThrow(() -> new IllegalArgumentException("선택하신 게시글은 존재하지 않거나 비밀번호가 일치하지 않습니다."));
 //    }
 
-
-//    private Post findPost(Long id, String password){
-//        Optional<Post> post =  postRepository.findById(id);
-//        if(post.isPresent()){
-//            return postRepository.findByPassoword(password).orElseThrow(()->
-//                    new IllegalArgumentException("Password가 일치하지 않습니다."));
-//        } else throw new IllegalArgumentException("선택하신 게시글은 존재하지 않습니다.");
-//
-//    }
 }

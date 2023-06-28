@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post,Long> {
 
 //    List<Post> findAllByOrderByModifiedAtDesc();
-    List<Post> findAllByOrderByCreatedAtDesc();
+    List<Post> findAllByOrderByCreatedAtDesc(); // 첫 게시 날짜로 내림차순
 //    Optional<Post> findById(Long id); // 선택한 게시글(하나) 읽어오는 방법
 }
