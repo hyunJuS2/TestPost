@@ -2,10 +2,7 @@ package com.sparta.testpost.controller;
 
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
-import com.sparta.testpost.dto.PostResponseDtowhole;
-import com.sparta.testpost.entity.Post;
 import com.sparta.testpost.service.PostService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
