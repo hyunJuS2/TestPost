@@ -18,13 +18,17 @@ public class Post extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "password", nullable = false, unique = true)
     private String password;
-    @Column(name = "username", nullable = false)
+
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
-    @Column(name = "contents", nullable = false, length = 500)
+
+    @Column(name = "contents", length = 500) //null 값 허용
     private String contents;
-    @Column(name = "title", nullable = false)
+
+    @Column(name = "title") //null 값 허용
     private String title;
 
     public Post(PostRequestDto requestDto) { // 처음 글을 등록할 때
@@ -32,6 +36,11 @@ public class Post extends Timestamped{
         this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+    }
+
+    public Post(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
 

@@ -22,9 +22,18 @@ repositories {
 }
 
 dependencies {
-// JPA 구현체인 hibernate
+    //validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // JWT
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // JPA 구현체인 hibernate
     implementation 'org.hibernate:hibernate-core:6.1.7.Final'
-// MySQL
+    // MySQL
     implementation 'mysql:mysql-connector-java:8.0.28'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
