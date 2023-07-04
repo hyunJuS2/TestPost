@@ -22,16 +22,16 @@ public class PostController {
     private final JwtUtil jwtUtil;
 
     // 게시글 전체 조회
-    @GetMapping("/posts")
+    @GetMapping("/cm/posts")
     public List<PostResponseDto> getPosts() {
         return postService.getPosts();
     }
 
 
     // 게시글 등록
-    @PostMapping("/cm/post")
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto , @RequestAttribute("post") Post post ) {
-       return postService.createPost(requestDto,post.getUsername());
+    @PostMapping("/posts")
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto , @RequestAttribute("user") User user ) {
+       return postService.createPost(requestDto,user.getUsername());
     }
     // 선택한 게시글 조회
 //    @GetMapping("/posts/{id}")
@@ -40,7 +40,7 @@ public class PostController {
 //    }
 
     // 선택한 게시글 조회
-    @GetMapping("/cm/posts/{id}")
+    @GetMapping("/cm/post/{id}")
     public PostResponseDto getPost(@PathVariable Long id) {
         return postService.getPost(id);
     } // 선택한 id 값에 해당하는 데이터를 Get하는 방식으로 Request Parameter -> Path Variable 형식

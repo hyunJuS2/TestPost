@@ -29,9 +29,14 @@ public class Post extends Timestamped{
     private String title;
 
     public Post(PostRequestDto requestDto) { // 처음 글을 등록할 때
-        this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+    }
+
+    public Post(String username, PostRequestDto requestDto) {
+        this.username = username;
+        this.contents = requestDto.getContents();
+        this.title = requestDto.getTitle();
     }
 
     public void update(PostRequestDto requestDto) { // 수정할 내용들

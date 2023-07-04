@@ -22,10 +22,8 @@ public class PostService {
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
 
-        // token 검증
-
         // RequestDto -> Entity
-        Post post = new Post(requestDto);
+        Post post = new Post(username,requestDto);
         // DB 저장
         Post savePost = postRepository.save(post);
         // Entity -> ResponseDto
