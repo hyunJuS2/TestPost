@@ -3,6 +3,7 @@ package com.sparta.testpost.controller;
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
 import com.sparta.testpost.entity.Post;
+import com.sparta.testpost.entity.User;
 import com.sparta.testpost.jwt.JwtUtil;
 import com.sparta.testpost.service.PostService;
 import io.jsonwebtoken.Claims;
@@ -25,8 +26,10 @@ public class PostController {
     public List<PostResponseDto> getPosts() {
         return postService.getPosts();
     }
+
+
     // 게시글 등록
-    @PostMapping("/posts")
+    @PostMapping("/cm/post")
     public PostResponseDto createPost(@RequestBody PostRequestDto requestDto , @RequestAttribute("post") Post post ) {
        return postService.createPost(requestDto,post.getUsername());
     }
@@ -37,7 +40,7 @@ public class PostController {
 //    }
 
     // 선택한 게시글 조회
-    @GetMapping("/posts/{id}")
+    @GetMapping("/cm/posts/{id}")
     public PostResponseDto getPost(@PathVariable Long id) {
         return postService.getPost(id);
     } // 선택한 id 값에 해당하는 데이터를 Get하는 방식으로 Request Parameter -> Path Variable 형식
@@ -47,15 +50,14 @@ public class PostController {
     public PostResponseDto updatePost(
             @PathVariable Long id,
             @RequestBody PostRequestDto requestDto,
-            @RequestAttribute("post") Post post
+            @RequestAttribute("user") User user
 //            @RequestAttribute("username") String username
     ) {
         // post 객체는 AuthFilter에서 설정한 request attribute "post"로부터 전달 받습니다.
 
         // 게시글 수정 로직 수행
-        return postService.updatePost(post,id,requestDto);
-
-
+//        return postService.updatePost(user,id,requestDto);
+        return  null;
     }
 
     // 선택한 게시글 삭제
