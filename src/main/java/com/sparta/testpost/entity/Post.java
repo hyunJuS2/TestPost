@@ -28,12 +28,12 @@ public class Post extends Timestamped{
     @Column(name = "title") //null 값 허용
     private String title;
 
-    public Post(PostRequestDto requestDto) { // 처음 글을 등록할 때
-        this.title = requestDto.getTitle();
-        this.contents = requestDto.getContents();
-    }
+//    public Post(PostRequestDto requestDto) { // 처음 글을 등록할 때
+//        this.title = requestDto.getTitle();
+//        this.contents = requestDto.getContents();
+//    }
 
-    public Post(String username, PostRequestDto requestDto) {
+    public Post(PostRequestDto requestDto, String username) {
         this.username = username;
         this.contents = requestDto.getContents();
         this.title = requestDto.getTitle();

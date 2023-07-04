@@ -1,5 +1,6 @@
 package com.sparta.testpost.controller;
 
+import com.sparta.testpost.dto.DeleteResponseDto;
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
 import com.sparta.testpost.entity.Post;
@@ -18,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class PostController {
+
     private final PostService postService;
     private final JwtUtil jwtUtil;
 
@@ -51,20 +53,17 @@ public class PostController {
             @PathVariable Long id,
             @RequestBody PostRequestDto requestDto,
             @RequestAttribute("user") User user
-//            @RequestAttribute("username") String username
     ) {
         // post 객체는 AuthFilter에서 설정한 request attribute "post"로부터 전달 받습니다.
 
         // 게시글 수정 로직 수행
-//        return postService.updatePost(user,id,requestDto);
-        return  null;
+      return postService.updatePost(user,id,requestDto);
     }
 
     // 선택한 게시글 삭제
     @DeleteMapping("/posts/{id}")
-    public Map<String, String> deletePost(@PathVariable Long id, @RequestBody Map<String,String> password) { // 해당하는 비밀번호 값만 불러오면 되니까
-        // password = {"password":"77878"}
-        return  null;
-//        return postService.deletePost(id ,password.get("password"));
+    public DeleteResponseDto deletePost(@PathVariable Long id, @RequestAttribute("user") User user) { // 해당하는 비밀번호 값만 불러오면 되니까
+        return postService.deletePost(id,user);
+
     }
 }

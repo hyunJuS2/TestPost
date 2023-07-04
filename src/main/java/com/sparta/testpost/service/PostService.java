@@ -1,11 +1,12 @@
 package com.sparta.testpost.service;
 
+import com.sparta.testpost.dto.DeleteResponseDto;
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
 import com.sparta.testpost.entity.Post;
+import com.sparta.testpost.entity.User;
 import com.sparta.testpost.jwt.JwtUtil;
 import com.sparta.testpost.repository.PostRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class PostService {
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
 
         // RequestDto -> Entity
-        Post post = new Post(username,requestDto);
+        Post post = new Post(requestDto, username);
         // DB 저장
         Post savePost = postRepository.save(post);
         // Entity -> ResponseDto
@@ -48,38 +49,16 @@ public class PostService {
     }
 
 
-    // 게시글 수정 로직
-//    @Transactional
-//    public PostResponseDto updatePost(Long id, PostRequestDto requestDto, String username)  {
-//        // 해당 ID 일치하는 게시글 조회
-//        Optional<Post> optionalPost = postRepository.findById(id);
-//        if(optionalPost.isPresent()) {
-//            Post post = optionalPost.get();
-//            // 게시글 작성자와 현재 사용자가 동일한지 확인
-//            if (post.getUsername().equals(username)) {
-//                // 게시글 수정
-//                post.update(requestDto);
-//                // 객체에 담아서 return 하기
-//                PostResponseDto postResponseDto = new PostResponseDto(post);
-//                return postResponseDto;
-//            } else {
-//                throw new IllegalArgumentException("접근이 거부되었습니다.");
-//            }
-//        } else {
-//            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
-//        }
-//    }
-
     @Transactional
-    public PostResponseDto updatePost(Post post, Long id,PostRequestDto requestDto)  {
+    public PostResponseDto updatePost(User user, Long id, PostRequestDto requestDto)  {
         // 해당 ID 일치하는 게시글 조회
         Optional<Post> optionalPost = postRepository.findById(id);
         if(optionalPost.isPresent()) {
             Post postUp = optionalPost.get();
             // 게시글 작성자와 현재 사용자가 동일한지 확인
-            if (postUp.getUsername().equals(post.getUsername())) {
+            if (postUp.getUsername().equals(user.getUsername())) {
                 // 게시글 수정
-                post.update(requestDto);
+                postUp.update(requestDto);
                 // 객체에 담아서 return 하기
                 PostResponseDto postResponseDto = new PostResponseDto(postUp);
                 return postResponseDto;
@@ -93,29 +72,31 @@ public class PostService {
 
     //게시글 삭제 로직
     @Transactional
-    public void deletePost(PostRequestDto requestDto, Claims info) {
-        // 토큰에 저장된 사용자명과 일치하는 게시글 조회
-        Optional<Post> optionalPost = postRepository.findByUsername(info.getSubject());
+    public DeleteResponseDto deletePost(Long id , User user ) {
 
-        if(optionalPost.isPresent()){
-          Post post = optionalPost.get();
+        DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
 
-          // 게시글 삭제
-          postRepository.delete(post);
+        // 해당 ID 일치하는 게시글 조회
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if(optionalPost.isPresent()) {
+            Post postDel = optionalPost.get();
+            // 토큰에 저장된 사용자명과 일치하는 게시글 조회
+            if(postDel.getUsername().equals(user.getUsername())) {
+                // 게시글 삭제
+                postRepository.delete(postDel);
+                deleteResponseDto.setMsg("게시글 삭제 성공");
+                deleteResponseDto.setStatusCode(200);
+
+
+            } else {
+                throw new IllegalArgumentException("접근이 거부되었습니다.");
+            }
         } else {
-            throw new IllegalArgumentException("Not Found Post");
+            throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
         }
+        return deleteResponseDto;
     }
-    //게시글의 존재여부 확인
-//    private Post findPost(String token ,Long id){
-//        Post post = postRepository.findById(id).orElseThrow(()->
-//                new IllegalArgumentException("선택하신 게시글은 존재하지 않습니다."));
-//        String postPassword = post.getPassword(); // 게시글에 등록된 비밀번호를 가져온다.
-//        if(!postPassword.equals(password)){
-//            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-//        }
-//        return post;
-//    }
+
 
 
 // 윤상님🌟
@@ -130,11 +111,5 @@ public class PostService {
 //        return Collections.singletonMap("success","true");
 //    }
 
-
-//    private Post findPost(Long id, String password) {
-//        return postRepository.findById(id)
-//                .filter(post -> post.getPassword().equals(password))
-//                .orElseThrow(() -> new IllegalArgumentException("선택하신 게시글은 존재하지 않거나 비밀번호가 일치하지 않습니다."));
-//    }
 
 }
