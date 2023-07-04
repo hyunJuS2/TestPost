@@ -1,6 +1,7 @@
 package com.sparta.testpost.service;
 
 import com.sparta.testpost.dto.LoginRequestDto;
+import com.sparta.testpost.dto.ResultResponseDto;
 import com.sparta.testpost.dto.SignupRequestDto;
 import com.sparta.testpost.entity.Post;
 import com.sparta.testpost.entity.User;
@@ -24,7 +25,9 @@ public class UserService {
 
 
     //회원가입
-    public void signup(SignupRequestDto requestDto) {
+    public ResultResponseDto signup(SignupRequestDto requestDto) {
+        ResultResponseDto resultResponseDto = new ResultResponseDto();
+
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
@@ -37,10 +40,18 @@ public class UserService {
         // 사용자 등록
         User user = new User(username, password);
         userRepostiory.save(user);
+
+        resultResponseDto.setMsg("회원 가입 성공");
+        resultResponseDto.setStatusCode(200);
+
+        return resultResponseDto;
     }
 
     //로그인
-    public void login(LoginRequestDto requestDto, HttpServletResponse res) {
+    public ResultResponseDto login(LoginRequestDto requestDto, HttpServletResponse res) {
+
+        ResultResponseDto resultResponseDto = new ResultResponseDto();
+
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
@@ -56,5 +67,10 @@ public class UserService {
         //JWT 생성 및 쿠키에 저장 후 Response 객체에 추가
         String token = jwtUtil.createToken(user.getUsername());
         jwtUtil.addJwtToCookie(token,res);
+
+        resultResponseDto.setMsg("로그인 성공");
+        resultResponseDto.setStatusCode(200);
+
+        return resultResponseDto;
     }
 }

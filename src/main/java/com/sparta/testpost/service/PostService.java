@@ -1,6 +1,6 @@
 package com.sparta.testpost.service;
 
-import com.sparta.testpost.dto.DeleteResponseDto;
+import com.sparta.testpost.dto.ResultResponseDto;
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
 import com.sparta.testpost.entity.Post;
@@ -72,9 +72,9 @@ public class PostService {
 
     //게시글 삭제 로직
     @Transactional
-    public DeleteResponseDto deletePost(Long id , User user ) {
+    public ResultResponseDto deletePost(Long id , User user ) {
 
-        DeleteResponseDto deleteResponseDto = new DeleteResponseDto();
+        ResultResponseDto deleteResponseDto = new ResultResponseDto();
 
         // 해당 ID 일치하는 게시글 조회
         Optional<Post> optionalPost = postRepository.findById(id);

@@ -1,19 +1,15 @@
 package com.sparta.testpost.controller;
 
-import com.sparta.testpost.dto.DeleteResponseDto;
+import com.sparta.testpost.dto.ResultResponseDto;
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
-import com.sparta.testpost.entity.Post;
 import com.sparta.testpost.entity.User;
 import com.sparta.testpost.jwt.JwtUtil;
 import com.sparta.testpost.service.PostService;
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -62,7 +58,7 @@ public class PostController {
 
     // 선택한 게시글 삭제
     @DeleteMapping("/posts/{id}")
-    public DeleteResponseDto deletePost(@PathVariable Long id, @RequestAttribute("user") User user) { // 해당하는 비밀번호 값만 불러오면 되니까
+    public ResultResponseDto deletePost(@PathVariable Long id, @RequestAttribute("user") User user) { // 해당하는 비밀번호 값만 불러오면 되니까
         return postService.deletePost(id,user);
 
     }

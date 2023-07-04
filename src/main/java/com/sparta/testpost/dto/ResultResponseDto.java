@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DeleteResponseDto {
+public class ResultResponseDto {
     String msg;
     int statusCode;
 

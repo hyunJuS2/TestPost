@@ -1,6 +1,7 @@
 package com.sparta.testpost.controller;
 
 import com.sparta.testpost.dto.LoginRequestDto;
+import com.sparta.testpost.dto.ResultResponseDto;
 import com.sparta.testpost.dto.SignupRequestDto;
 import com.sparta.testpost.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,29 +24,20 @@ public class UserController {
 
 
     @PostMapping("/user/login")
-    public String loginPage(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
-        try {
-            userService.login(requestDto, res);
-            return "로그인이 되었습니다.";
-        } catch (Exception e) {
-            return "로그인에 실패하였습니다.";
-        }
+    public ResultResponseDto loginPage(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+        return userService.login(requestDto, res);
     }
 
 
     @PostMapping("/user/signup")
-    public String signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+    public ResultResponseDto signup(@RequestBody @Valid SignupRequestDto requestDto, BindingResult bindingResult) {
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
+        if (fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
-            return "회원가입에 실패하였습니다";
         }
-
-        userService.signup(requestDto);
-
-        return "회원가입이 완료 되었습니다.";
+        return userService.signup(requestDto);
     }
 }
