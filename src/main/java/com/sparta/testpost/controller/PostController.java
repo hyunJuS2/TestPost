@@ -2,20 +2,23 @@ package com.sparta.testpost.controller;
 
 import com.sparta.testpost.dto.PostRequestDto;
 import com.sparta.testpost.dto.PostResponseDto;
+import com.sparta.testpost.entity.Post;
+import com.sparta.testpost.jwt.JwtUtil;
 import com.sparta.testpost.service.PostService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class PostController {
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+    private final JwtUtil jwtUtil;
 
     // 게시글 전체 조회
     @GetMapping("/posts")
@@ -24,8 +27,8 @@ public class PostController {
     }
     // 게시글 등록
     @PostMapping("/posts")
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto) {
-        return postService.createPost(requestDto);
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto , @RequestAttribute("post") Post post ) {
+       return postService.createPost(requestDto,post.getUsername());
     }
     // 선택한 게시글 조회
 //    @GetMapping("/posts/{id}")
@@ -41,14 +44,25 @@ public class PostController {
 
     // 선택한 게시글 수정
     @PutMapping("/posts/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) { //수정해야하니까 RequestBody
-        return postService.updatePost(id, requestDto);
+    public PostResponseDto updatePost(
+            @PathVariable Long id,
+            @RequestBody PostRequestDto requestDto,
+            @RequestAttribute("post") Post post
+//            @RequestAttribute("username") String username
+    ) {
+        // post 객체는 AuthFilter에서 설정한 request attribute "post"로부터 전달 받습니다.
+
+        // 게시글 수정 로직 수행
+        return postService.updatePost(post,id,requestDto);
+
+
     }
 
     // 선택한 게시글 삭제
     @DeleteMapping("/posts/{id}")
     public Map<String, String> deletePost(@PathVariable Long id, @RequestBody Map<String,String> password) { // 해당하는 비밀번호 값만 불러오면 되니까
         // password = {"password":"77878"}
-        return postService.deletePost(id ,password.get("password"));
+        return  null;
+//        return postService.deletePost(id ,password.get("password"));
     }
 }

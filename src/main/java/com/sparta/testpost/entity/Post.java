@@ -19,9 +19,6 @@ public class Post extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "password", nullable = false, unique = true)
-    private String password;
-
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -32,21 +29,13 @@ public class Post extends Timestamped{
     private String title;
 
     public Post(PostRequestDto requestDto) { // 처음 글을 등록할 때
-        this.password = requestDto.getPassword();
         this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
 
-    public Post(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-
     public void update(PostRequestDto requestDto) { // 수정할 내용들
-        //제목, 작성자명, 작성 내용을 수정
-        this.username = requestDto.getUsername();
+        //제목, 작성 내용을 수정
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
